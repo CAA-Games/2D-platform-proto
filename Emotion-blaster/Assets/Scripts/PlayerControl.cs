@@ -9,6 +9,9 @@ public class PlayerControl : MonoBehaviour {
 	public float acceleration = 12;
 	public float jumpHeight = 12;
 
+	public GameObject thing;
+	public GameObject cursor;
+
 	private float currentSpeed;
 	private float targetSpeed;
 	private Vector2 amountToMove;
@@ -38,6 +41,16 @@ public class PlayerControl : MonoBehaviour {
 			}
 		}
 
+		if(Input.GetButtonDown("Fire1")) {
+			Vector3 direction = cursor.transform.position - transform.position;
+			if (direction.magnitude > 1) {
+				direction = direction.normalized;
+			}
+			GameObject newBullet = (GameObject) Instantiate(thing, transform.position + direction, Quaternion.identity);
+
+			newBullet.rigidbody2D.AddForce (direction * 500);
+		}
+		
 		amountToMove.x = currentSpeed;
 		amountToMove.y -= gravity * Time.deltaTime;
 		playerPhysics.Move (amountToMove * Time.deltaTime);
